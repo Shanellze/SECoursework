@@ -44,12 +44,7 @@ void Person::setEmail(string email) {
 
 
 //Class Librarian
-Librarian::Librarian(int staffID, string name, string address, string email, int salary) : Person(name, address, email) {
-    this->staffID = staffID;
-    this->name = name;
-    this->address = address;
-    this->email = email;
-    this->salary = salary;
+Librarian::Librarian(int staffID, string name, string address, string email, int salary) : Person(name, address, email), staffID(staffID), salary(salary) {
 }
 
 
@@ -89,11 +84,7 @@ void Librarian::setSalary(int salary) {
 
 
 //Class Member
-Member::Member(int memberID, string name, string address, string email) : Person(name, address, email) {
-    this->memberID = memberID;
-    this->name = name;
-    this->address = address;
-    this->email = email;
+Member::Member(int memberID, string name, string address, string email) : Person(name, address, email), memberID(memberID) {
 }
 
 
@@ -162,6 +153,8 @@ void Book::borrowBook(Member* borrower, string dueDate) {
 
 
 int main() {
-    
+    int userInput;
+
+    cout << "Welcome to the library system." << endl;
 
 }
