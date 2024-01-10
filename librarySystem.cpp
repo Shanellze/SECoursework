@@ -1,10 +1,12 @@
 #include <iostream>
 #include "librarySystem.h"
+#include <string>
 #include <vector>
+using namespace std;
 
 
 //Class Person
-Person::Person(std::string name, std::string address, std::string email){
+Person::Person(string name, string address, string email){
     this->name = name;
     this->address = address;
     this->email = email;
@@ -16,33 +18,33 @@ Person::~Person()
 
 
 //Getter and setter methods
-std::string Person::getName() {
+string Person::getName() {
     return name;
 }
 
-void Person::setName(std::string name) {
+void Person::setName(string name) {
     this->name = name;
 }
 
-std::string Person::getAddress() {
+string Person::getAddress() {
     return address;
 }
 
-void Person::setAddress(std::string address) {
+void Person::setAddress(string address) {
     this->address = address;
 }
 
-std::string Person::getEmail() {
+string Person::getEmail() {
     return email;
 }
 
-void Person::setEmail(std::string email) {
+void Person::setEmail(string email) {
     this->email = email;
 }
 
 
 //Class Librarian
-Librarian::Librarian(int staffID, std::string name, std::string address, std::string email, int salary) : Person(name, address, email) {
+Librarian::Librarian(int staffID, string name, string address, string email, int salary) : Person(name, address, email) {
     this->staffID = staffID;
     this->name = name;
     this->address = address;
@@ -87,7 +89,7 @@ void Librarian::setSalary(int salary) {
 
 
 //Class Member
-Member::Member(int memberID, std::string name, std::string address, std::string email) : Person(name, address, email) {
+Member::Member(int memberID, string name, string address, string email) : Person(name, address, email) {
     this->memberID = memberID;
     this->name = name;
     this->address = address;
@@ -100,7 +102,7 @@ int Member::getMemberID() {
     return memberID;
 }
 
-std::vector<Book*> Member::getBooksBorrowed() {
+vector<Book*> Member::getBooksBorrowed() {
     return booksLoaned;
 }
 
@@ -110,7 +112,7 @@ void Member::setBooksBorrowed(Book* book) {
 
 
 //Class Book
-Book::Book(int bookID, std::string bookName, std::string authorFirstName, std::string authorLastName){
+Book::Book(int bookID, string bookName, string authorFirstName, string authorLastName){
     this->bookID = bookID;
     this->bookName = bookName;
     this->authorFirstName = authorFirstName;
@@ -126,23 +128,23 @@ int Book::getBookID() {
     return bookID;
 }
 
-std::string Book::getBookName() {
+string Book::getBookName() {
     return bookName;
 }
 
-std::string Book::getAuthorFirstName() {
+string Book::getAuthorFirstName() {
     return authorFirstName;
 }
 
-std::string Book::getAuthorLastName() {
+string Book::getAuthorLastName() {
     return authorLastName;
 }
 
-std::string Book::getDueDate() {
+string Book::getDueDate() {
     return dueDate;
 }
 
-void Book::setDueDate(std::string dueDate) {
+void Book::setDueDate(string dueDate) {
     this->dueDate = dueDate;
 }
 
@@ -152,7 +154,7 @@ void Book::returnBook() {
     borrower = nullptr;
     setDueDate("");
 }
-void Book::borrowBook(Member* borrower, std::string dueDate) {
+void Book::borrowBook(Member* borrower, string dueDate) {
     this->borrower = borrower;
     setDueDate(dueDate);
 }
@@ -160,5 +162,6 @@ void Book::borrowBook(Member* borrower, std::string dueDate) {
 
 
 int main() {
+    
 
 }
