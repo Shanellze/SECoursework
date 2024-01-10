@@ -6,6 +6,17 @@
 #include <vector>
 using namespace std;
 
+struct Date {
+    int year;
+    int month;
+    int day;
+
+    Date() : year(0), month(0), day(0) {}
+    Date(int year, int month, int day) : year(year), month(month), day(day) {}
+};
+
+class Book;
+
 class Person {
   string name;
   string address;
@@ -65,7 +76,7 @@ private:
     string authorFirstName;
     string authorLastName;
     string bookType;
-    string dueDate; 
+    Date dueDate; 
     Member* borrower; 
 
 public:
@@ -77,11 +88,11 @@ public:
     string getAuthorFirstName();
     string getAuthorLastName();
 
-    string getDueDate(); 
-    void setDueDate(string dueDate); 
+    Date getDueDate(); 
+    void setDueDate(Date dueDate); 
 
     void returnBook();
-    void borrowBook(Member* borrower, string dueDate); 
+    void borrowBook(Member* borrower, Date dueDate); 
 };
 
 #endif
