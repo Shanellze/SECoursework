@@ -2,6 +2,7 @@
 #include "librarySystem.h"
 #include <string>
 #include <vector>
+#include <limits>
 using namespace std;
 
 
@@ -155,6 +156,27 @@ void Book::borrowBook(Member* borrower, string dueDate) {
 int main() {
     int userInput;
 
-    cout << "Welcome to the library system." << endl;
+    cout << "Welcome to the library system.\n" << endl;
 
+    bool validInput = false;
+    while (!validInput) {
+        cout << "[1] ADD A NEW MEMBER\n";
+        cout << "[2] ISSUE A BOOK\n";
+        cout << "[3] RETURN A BOOK\n";
+        cout << "[4] DISPLAY ALL BORROWED BOOKS\n";
+        cout << "[5] EXIT\n";
+        cout << "\nENTER YOUR CHOICE HERE: ";
+        cin >> userInput;
+
+        if (cin.fail() || userInput < 1 || userInput > 5) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input, please enter a number between 1 and 5.\n" << endl;
+        } else {
+            validInput = true;
+        }
+    }
+
+
+    return 0;
 }
