@@ -51,6 +51,34 @@ Librarian::Librarian(int staffID, string name, string address, string email, int
 
 //Methods
 void Librarian::addMember() {
+    vector<Member*> members;
+    int memberID;
+    string name;
+    string address;
+    string email;
+
+    //Collecting data on the member
+    memberID = members.size();
+
+    cout << "Enter name: ";
+    cin >> name;
+
+    cout << "Enter address: ";
+    cin >> address;
+
+    cout << "Enter email: ";
+    cin >> email;
+
+    //Creating the member and adding it to the list of members
+    members.push_back(new Member(memberID++, name, address, email));
+
+    //Displaying the account details
+    cout << "\nMember created:\n";
+    cout << "ID: " << memberID << "\n";
+    cout << "Name: " << name << "\n";
+    cout << "Address: " << address << "\n";
+    cout << "Email: " << email << "\n";
+    
 }
 
 void Librarian::issueBook(int memberID, int bookID) {
@@ -132,11 +160,11 @@ string Book::getAuthorLastName() {
     return authorLastName;
 }
 
-string Book::getDueDate() {
+Date Book::getDueDate() {
     return dueDate;
 }
 
-void Book::setDueDate(string dueDate) {
+void Book::setDueDate(Date dueDate) {
     this->dueDate = dueDate;
 }
 
@@ -144,9 +172,10 @@ void Book::setDueDate(string dueDate) {
 //Methods
 void Book::returnBook() {
     borrower = nullptr;
-    setDueDate("");
+    Date emptyDate;
+    setDueDate(emptyDate);
 }
-void Book::borrowBook(Member* borrower, string dueDate) {
+void Book::borrowBook(Member* borrower, Date dueDate) {
     this->borrower = borrower;
     setDueDate(dueDate);
 }
@@ -154,10 +183,17 @@ void Book::borrowBook(Member* borrower, string dueDate) {
 
 
 int main() {
-    int userInput;
+    Librarian librarian(1, "Shanell", "15 Widmore Rd, Bromley, BR1 1RL", "shanellze@library.com", 40000);
+
+    //Load books
+
+
+
 
     cout << "Welcome to the library system.\n" << endl;
 
+    //Gathering user input
+    int userInput;
     bool validInput = false;
     while (!validInput) {
         cout << "[1] ADD A NEW MEMBER\n";
@@ -175,6 +211,28 @@ int main() {
         } else {
             validInput = true;
         }
+    }
+
+    //Input Handling
+    if (userInput == 1) {
+        cout << "Add a new member selected.\n" << endl;
+        //Add a new member
+        librarian.addMember();
+    }
+    else if (userInput == 2) {
+        cout << "Issue a book selected." << endl;
+        //Issue a book
+    }
+    else if (userInput == 3) {
+        cout << "Return a book selected." << endl;
+        //Return a book
+    }
+    else if (userInput == 4) {
+        cout << "Display all borrowed books selected." << endl;
+        //Display all borrowed books
+    }
+    else if (userInput == 5) {
+        cout << "Exiting the program." << endl;
     }
 
 
