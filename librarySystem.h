@@ -4,23 +4,24 @@
 #include <iostream>
 #include <string>
 #include <vector>
+using namespace std;
 
 class Person {
-  std::string name;
-  std::string address;
-  std::string email;
+  string name;
+  string address;
+  string email;
 public:
-  Person(std::string name, std::string address, std::string email);
+  Person(string name, string address, string email);
   virtual ~Person();
 
-  std::string getName();
-  void setName(std::string name);
+  string getName();
+  void setName(string name);
   
-  std::string getAddress();
-  void setAddress(std::string address);
+  string getAddress();
+  void setAddress(string address);
   
-  std::string getEmail();
-  void setEmail(std::string email);
+  string getEmail();
+  void setEmail(string email);
 };
 
 class Librarian : public Person {
@@ -28,7 +29,7 @@ class Librarian : public Person {
   int staffID;
   int salary;
  public:
-  Librarian(int staffID, std::string name, std::string address, std::string email, int salary);
+  Librarian(int staffID, string name, string address, string email, int salary);
     
     void addMember();
     void issueBook(int memberID, int bookID);
@@ -46,41 +47,41 @@ class Librarian : public Person {
 class Member : public Person {
 private:
     int memberID;
-    std::vector<Book*> booksLoaned; //CHECK THIS
+    vector<Book*> booksLoaned; 
 
 public:
-    Member(int memberID, std::string name, std::string address, std::string email);
+    Member(int memberID, string name, string address, string email);
     
     int getMemberID();
 
-    std::vector<Book*> getBooksBorrowed(); //CHECK THIS
-    void setBooksBorrowed(Book* book); //CHECK THIS
+    vector<Book*> getBooksBorrowed(); 
+    void setBooksBorrowed(Book* book); 
 };
 
 class Book {
 private:
     int bookID;
-    std::string bookName;
-    std::string authorFirstName;
-    std::string authorLastName;
-    std::string bookType;
-    std::string dueDate; 
-    Member* borrower; // FIX THIS
+    string bookName;
+    string authorFirstName;
+    string authorLastName;
+    string bookType;
+    string dueDate; 
+    Member* borrower; 
 
 public:
-    Book(int bookID, std::string bookName, std::string authorFirstName, std::string authorLastName);
+    Book(int bookID, string bookName, string authorFirstName, string authorLastName);
     virtual ~Book();
     
     int getBookID(); 
-    std::string getBookName();
-    std::string getAuthorFirstName();
-    std::string getAuthorLastName();
+    string getBookName();
+    string getAuthorFirstName();
+    string getAuthorLastName();
 
-    std::string getDueDate(); 
-    void setDueDate(std::string dueDate); 
+    string getDueDate(); 
+    void setDueDate(string dueDate); 
 
     void returnBook();
-    void borrowBook(Member* borrower, std::string dueDate); // FIX THIS
+    void borrowBook(Member* borrower, string dueDate); 
 };
 
 #endif
