@@ -194,6 +194,8 @@ int main() {
 
     //Gathering user input
     int userInput;
+    int userMemberID;
+    int userBookID;
     bool validInput = false;
     while (!validInput) {
         cout << "[1] ADD A NEW MEMBER\n";
@@ -220,16 +222,38 @@ int main() {
         librarian.addMember();
     }
     else if (userInput == 2) {
-        cout << "Issue a book selected." << endl;
+        cout << "Issue a book selected.\n" << endl;
+
+        cout << "Enter Member ID: ";
+        cin >> userMemberID;
+
+        cout << "Enter Book ID: ";
+        cin >> userBookID;
+
         //Issue a book
+        librarian.issueBook(userMemberID, userBookID);
     }
     else if (userInput == 3) {
-        cout << "Return a book selected." << endl;
+        cout << "Return a book selected.\n" << endl;
+
+        cout << "Enter Member ID: ";
+        cin >> userMemberID;
+
+        cout << "Enter Book ID: ";
+        cin >> userBookID;
+
         //Return a book
+        librarian.returnBook(userMemberID, userBookID);
+
     }
     else if (userInput == 4) {
-        cout << "Display all borrowed books selected." << endl;
-        //Display all borrowed books
+        cout << "Display all borrowed books selected.\n" << endl;
+
+        cout << "Enter Member ID: ";
+        cin >> userMemberID;
+
+        //Display all borrowed books by the member
+        librarian.displayBorrowedBooks(userMemberID);
     }
     else if (userInput == 5) {
         cout << "Exiting the program." << endl;
