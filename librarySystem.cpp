@@ -5,6 +5,8 @@
 #include <limits>
 using namespace std;
 
+vector<Member*> members;
+
 
 //Class Person
 Person::Person(string name, string address, string email){
@@ -51,7 +53,6 @@ Librarian::Librarian(int staffID, string name, string address, string email, int
 
 //Methods
 void Librarian::addMember() {
-    vector<Member*> members;
     int memberID;
     string name;
     string address;
