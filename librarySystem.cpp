@@ -5,9 +5,13 @@
 #include <string>
 #include <vector>
 #include <limits>
+#include <chrono>
 using namespace std;
 
 vector<Member*> members;
+vector<Book*> libraryBooks;
+
+Date calcDueDate();
 
 
 //Class Person
@@ -85,20 +89,47 @@ void Librarian::addMember() {
 }
 
 void Librarian::issueBook(int memberID, int bookID) {
+    //Find the member
+    for (auto& member : members) {
+        if (member->getMemberID() == memberID) {
+
+            //Find the book
+            for (auto& book : libraryBooks) {
+                if (book->getBookID() == bookID) {
+                    //Issue the book
+                    Date dueDate = calcDueDate();
+                    book->borrowBook(member, dueDate);
+                    member->setBooksBorrowed(book);
+
+                    //Display issued book
+                    cout << "\n" << book->getBookName() << " by " << book->getAuthorFirstName() << " " << book->getAuthorLastName() << " has been issued successfully." << endl;
+                    cout << "The book will be due on: " << dueDate.day << "/" << dueDate.month << "/" << dueDate.year << endl;
+                    break;
+                    
+                }
+            }
+
+        }
+    }
+
 }
 
 void Librarian::returnBook(int memberID, int bookID) {
 }
 
 void Librarian::displayBorrowedBooks(int memberID) {
+    //Find the member
     for (auto& member : members) {
         if (member->getMemberID() == memberID) {
             vector<Book*> borrowedBooks = member->getBooksBorrowed();
             
+            //Check whether the member has borrowed any books
             if (borrowedBooks.empty()) {
-                cout << "The member has not borrowed any books." << endl;
+                //No books borrowed
+                cout << "\nThe member has not borrowed any books." << endl;
             } else {
-                cout << "Borrowed books: " << endl;
+                //Display all borrowed books
+                cout << "\nBorrowed books: " << endl;
                 for (auto& book : borrowedBooks) {
                     cout << "Book ID: " << book->getBookID() << ", Name: " << book->getBookName() 
                          << ", Author: " << book->getAuthorFirstName() << " " << book->getAuthorLastName() << endl;
@@ -201,8 +232,54 @@ void Book::borrowBook(Member* borrower, Date dueDate) {
 }
 
 
+Date getCurrentDate() {
+    auto now = std::chrono::system_clock::now();
+    auto currentTime = std::chrono::system_clock::to_time_t(now);
+
+    tm* localTime = std::localtime(&currentTime);
+
+    Date currentDate;
+    currentDate.day = localTime->tm_mday;
+    currentDate.month = localTime->tm_mon + 1;
+    currentDate.year = localTime->tm_year + 1900;
+
+    return currentDate;
+}
+
+
+Date calcDueDate() {
+    Date dueDate = getCurrentDate();
+
+    //Adding 3 days to the current date
+    dueDate.day += 3;
+
+    //Handling the end of the month
+    int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    //Check for leap year
+    if ((dueDate.year % 4 == 0 && dueDate.year % 100 != 0) || (dueDate.year % 400 == 0))
+        daysInMonth[1] = 29;
+
+    //Adjust the day and month if necessary
+    if (dueDate.day > daysInMonth[dueDate.month - 1]) {
+        dueDate.day -= daysInMonth[dueDate.month - 1];
+        dueDate.month++;
+
+        //Adjust the year if necessary
+        if (dueDate.month > 12) {
+            dueDate.month = 1;
+            dueDate.year++;
+        }
+    }
+
+    return dueDate;
+}
+
+
+
 
 int main() {
+    
     //Library librarian data
     Librarian librarian(1, "Shanell", "15 Widmore Rd, Bromley, BR1 1RL", "shanellze@library.com", 40000);
 
@@ -216,7 +293,6 @@ int main() {
     string filename;
     filename = "library_books.csv";
 
-    vector<Book*> libraryBooks;
     ifstream file(filename);
     string line, temp;
     int bookID;
