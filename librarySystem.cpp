@@ -231,107 +231,114 @@ int main() {
     }
 
 
-    cout << "Welcome to the library system.\n" << endl;
+    cout << "Welcome to the library system." << endl;
 
-    //Gathering user input
-    int userInput;
-    int userMemberID;
-    int userBookID;
-    bool validInput = false;
-    while (!validInput) {
-        cout << "[1] ADD A NEW MEMBER\n";
-        cout << "[2] ISSUE A BOOK\n";
-        cout << "[3] RETURN A BOOK\n";
-        cout << "[4] DISPLAY ALL BORROWED BOOKS\n";
-        cout << "[5] EXIT\n";
-        cout << "\nENTER YOUR CHOICE HERE: ";
-        cin >> userInput;
+    bool running = true;
+    while (running) {
+        //Gathering user input
+        int userInput;
+        int userMemberID;
+        int userBookID;
+        bool validInput = false;
+        while (!validInput) {
+            cout << "\n-----------------------------" << endl;
+            cout << "| Library Management System |" << endl;
+            cout << "-----------------------------" << endl;
+            cout << "[1] ADD A NEW MEMBER\n";
+            cout << "[2] ISSUE A BOOK\n";
+            cout << "[3] RETURN A BOOK\n";
+            cout << "[4] DISPLAY ALL BORROWED BOOKS\n";
+            cout << "[5] EXIT\n";
+            cout << "\nENTER YOUR CHOICE HERE: ";
+            cin >> userInput;
 
-        if (cin.fail() || userInput < 1 || userInput > 5) {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Invalid input, please enter a number between 1 and 5.\n" << endl;
-        } else {
-            validInput = true;
-        }
-    }
-
-
-    //Input Handling
-    switch(userInput){
-        case 1:
-            cout << "Add a new member selected.\n" << endl;
-            break;
-        case 2:
-            cout << "Issue a book selected.\n" << endl;
-            break;
-        case 3:
-            cout << "Return a book selected.\n" << endl;
-            break;
-        case 4:
-            cout << "Display all borrowed books selected.\n" << endl;
-            break;
-    }
-
-    if (userInput == 1) {
-        //Add a new member
-        librarian.addMember();
-    }
-    else if (userInput == 2 || userInput == 3 || userInput == 4) {
-        bool validMemberID = false;
-        while (!validMemberID) {
-            cout << "Enter Member ID: ";
-            cin >> userMemberID;
-
-            // Check if the entered Member ID exists in the members vector
-            validMemberID = false;
-            for (auto& member : members) {
-                if (member->getMemberID() == userMemberID) {
-                    validMemberID = true;
-                    break;
-                }
-            }
-
-            if (!validMemberID) {
-                cout << "Invalid Member ID. Please try again." << endl;
+            if (cin.fail() || userInput < 1 || userInput > 5) {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Invalid input, please enter a number between 1 and 5.\n" << endl;
             } else {
-                if (userInput == 2 || userInput == 3){
-                    bool validBookID = false;
-                    while (!validBookID) {
+                validInput = true;
+            }
+        }
 
-                        cout << "Enter Book ID: ";
-                        cin >> userBookID;
 
-                        // Check if the entered Book ID exists in the books vector
-                        validBookID = false;
-                        for (auto& book : libraryBooks) {
-                            if (book->getBookID() == userBookID) {
-                                validBookID = true;
-                                break;
+        //Input Handling
+        switch(userInput){
+            case 1:
+                cout << "Add a new member selected.\n" << endl;
+                break;
+            case 2:
+                cout << "Issue a book selected.\n" << endl;
+                break;
+            case 3:
+                cout << "Return a book selected.\n" << endl;
+                break;
+            case 4:
+                cout << "Display all borrowed books selected.\n" << endl;
+                break;
+        }
+
+        if (userInput == 1) {
+            //Add a new member
+            librarian.addMember();
+        }
+        else if (userInput == 2 || userInput == 3 || userInput == 4) {
+            bool validMemberID = false;
+            while (!validMemberID) {
+                cout << "Enter Member ID: ";
+                cin >> userMemberID;
+
+                // Check if the entered Member ID exists in the members vector
+                validMemberID = false;
+                for (auto& member : members) {
+                    if (member->getMemberID() == userMemberID) {
+                        validMemberID = true;
+                        break;
+                    }
+                }
+
+                if (!validMemberID) {
+                    cout << "Invalid Member ID. Please try again." << endl;
+                } else {
+                    if (userInput == 2 || userInput == 3){
+                        bool validBookID = false;
+                        while (!validBookID) {
+
+                            cout << "Enter Book ID: ";
+                            cin >> userBookID;
+
+                            // Check if the entered Book ID exists in the books vector
+                            validBookID = false;
+                            for (auto& book : libraryBooks) {
+                                if (book->getBookID() == userBookID) {
+                                    validBookID = true;
+                                    break;
+                                }
+                            }
+
+                            if (!validBookID) {
+                                cout << "Invalid Book ID. Please try again." << endl;
+                            } else {
+                                if (userInput == 2) {
+                                    //Issue a book to a member
+                                    librarian.issueBook(userMemberID, userBookID);
+                                } else if (userInput == 3) {
+                                    //Return a book 
+                                    librarian.returnBook(userMemberID, userBookID);
+                                } 
                             }
                         }
-
-                        if (!validBookID) {
-                            cout << "Invalid Book ID. Please try again." << endl;
-                        } else {
-                            if (userInput == 2) {
-                                //Issue a book to a member
-                                librarian.issueBook(userMemberID, userBookID);
-                            } else if (userInput == 3) {
-                                //Return a book 
-                                librarian.returnBook(userMemberID, userBookID);
-                            } 
-                        }
+                    } else if (userInput == 4) {
+                        //Display all borrowed books of a member
+                        librarian.displayBorrowedBooks(userMemberID);
                     }
-                } else if (userInput == 4) {
-                    //Display all borrowed books of a member
-                    librarian.displayBorrowedBooks(userMemberID);
                 }
             }
         }
-    }
-    else if (userInput == 5) {
-        cout << "Exiting the program." << endl;
+        else if (userInput == 5) {
+            cout << "Exiting the program." << endl;
+            running = false;
+        }
     }
 
 
