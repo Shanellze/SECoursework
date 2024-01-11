@@ -91,6 +91,23 @@ void Librarian::returnBook(int memberID, int bookID) {
 }
 
 void Librarian::displayBorrowedBooks(int memberID) {
+    for (auto& member : members) {
+        if (member->getMemberID() == memberID) {
+            vector<Book*> borrowedBooks = member->getBooksBorrowed();
+            
+            if (borrowedBooks.empty()) {
+                cout << "The member has not borrowed any books." << endl;
+            } else {
+                cout << "Borrowed books: " << endl;
+                for (auto& book : borrowedBooks) {
+                    cout << "Book ID: " << book->getBookID() << ", Name: " << book->getBookName() 
+                         << ", Author: " << book->getAuthorFirstName() << " " << book->getAuthorLastName() << endl;
+                }
+            }
+            break;
+        }
+    }
+
 }
 
 void Librarian::calcFine(int memberID) {
