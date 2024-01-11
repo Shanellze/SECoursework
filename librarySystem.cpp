@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include "librarySystem.h"
 #include <string>
 #include <vector>
@@ -187,8 +189,39 @@ int main() {
     Librarian librarian(1, "Shanell", "15 Widmore Rd, Bromley, BR1 1RL", "shanellze@library.com", 40000);
 
     //Load books
+    string filename;
+    filename = "library_books.csv";
 
+    vector<Book*> libraryBooks;
+    ifstream file(filename);
+    string line, temp;
+    int bookID;
+    string bookName, authorFirstName, authorLastName;
 
+    //Unable to open file
+    if (!file.is_open()) {
+        cerr << "Error opening file: " << filename << endl;
+        return 1;
+    }
+
+    // Skip the header line
+    getline(file, line);
+
+    //Reading the file
+    while (getline(file, line)) {
+        stringstream ss(line);
+
+        getline(ss, temp, ','); 
+        bookID = stoi(temp);
+        getline(ss, bookName, ',');
+        getline(ss, temp, ',');
+        getline(ss, authorFirstName, ',');
+        getline(ss, authorLastName, ',');
+        getline(ss, temp, ',');
+
+        // Create a Book object and add it to the vector
+        libraryBooks.push_back(new Book(bookID, bookName, authorFirstName, authorLastName));
+    }
 
 
     cout << "Welcome to the library system.\n" << endl;
