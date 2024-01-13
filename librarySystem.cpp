@@ -12,6 +12,8 @@ vector<Member*> members;
 vector<Book*> libraryBooks;
 
 Date calcDueDate();
+Date getCurrentDate();
+int dateToDays(Date date);
 
 
 //Class Person
@@ -131,10 +133,16 @@ void Librarian::returnBook(int memberID, int bookID) {
                 //There is a book to be returned
                 for (auto& book : borrowedBooks) {
                     if (book->getBookID() == bookID) {
-                        //Check if the book is overdue
+                        // Check if the book is overdue
+                        if (daysOverdue > 0) {
+                            //Calculate the fine
+                            int fine = daysOverdue * finePerDay;
+                            totalFine += fine;
 
-                        //Calculate fine
-
+                            //Display fine details
+                            cout << "Book ID: " << book->getBookID() << ", Overdue by: " << daysOverdue << " days, Fine: £" << fine << endl;
+                        }
+                        
                         //Return the book
                         cout << "\nBook Returned: " << book->getBookName() << endl;
                         book->returnBook();
@@ -177,6 +185,38 @@ void Librarian::displayBorrowedBooks(int memberID) {
 }
 
 void Librarian::calcFine(int memberID) {
+    Date currentDate = getCurrentDate();
+    int finePerDay = 1;
+    int totalFine = 0;
+
+    //Find the member
+    for (auto& member : members) {
+        if (member->getMemberID() == memberID) {
+            vector<Book*> borrowedBooks = member->getBooksBorrowed();
+            
+            //Iterate through each borrowed book
+            for (auto& book : borrowedBooks) {
+                Date dueDate = book->getDueDate();
+
+                //Calculate the number of days overdue
+                int daysOverdue = (dateToDays(currentDate) - dateToDays(dueDate)); 
+
+                // Check if the book is overdue
+                if (daysOverdue > 0) {
+                    //Calculate the fine
+                    int fine = daysOverdue * finePerDay;
+                    totalFine += fine;
+
+                    //Display fine details
+                    cout << "Book ID: " << book->getBookID() << ", Overdue by: " << daysOverdue << " days, Fine: £" << fine << endl;
+                }
+            }
+            break;
+        }
+    }
+
+    //Display the total fine
+    cout << "Total fine for Member ID " << memberID << ": £" << totalFine << endl;
   
 }
 
@@ -289,7 +329,7 @@ Date calcDueDate() {
     //Adding 3 days to the current date
     dueDate.day += 3;
 
-    //Handling the end of the month
+    //Days in a month
     int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
     //Check for leap year
@@ -312,6 +352,26 @@ Date calcDueDate() {
     return dueDate;
 }
 
+int dateToDays(Date date) {
+    //Days in a month    
+     int daysInMonth[2][12] = {
+        {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
+        {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
+    };
+
+    //Calculating the days
+    int year = date.year - 1; 
+    int days = year * 365 + year / 4 - year / 100 + year / 400; 
+
+    bool isLeapYear = (date.year % 4 == 0 && date.year % 100 != 0) || (date.year % 400 == 0);
+    for (int i = 0; i < date.month - 1; ++i) {
+        days += daysInMonth[isLeapYear][i];
+    }
+
+    days += date.day;
+
+    return days;
+}
 
 
 
@@ -325,6 +385,7 @@ int main() {
     members.push_back(new Member(2, "Night", "address", "Night@library.com"));
     members.push_back(new Member(3, "Rain", "address", "Rain@library.com"));
     members.push_back(new Member(4, "light", "address", "light@library.com"));
+
 
     //Load books
     string filename;
@@ -361,6 +422,15 @@ int main() {
     }
 
 
+    //Library member details data
+    members[1]->setBooksBorrowed(libraryBooks[0]); 
+    members[1]->setBooksBorrowed(libraryBooks[1]); 
+
+    Date dueDate1 = {2023, 1, 15};
+    Date dueDate2 = {2023, 1, 20};
+    libraryBooks[0]->borrowBook(members[1], dueDate1);
+    libraryBooks[1]->borrowBook(members[1], dueDate2);
+
     cout << "Welcome to the library system." << endl;
 
     bool running = true;
@@ -378,14 +448,15 @@ int main() {
             cout << "[2] ISSUE A BOOK\n";
             cout << "[3] RETURN A BOOK\n";
             cout << "[4] DISPLAY ALL BORROWED BOOKS\n";
-            cout << "[5] EXIT\n";
+            cout << "[5] CALCULATE FINE \n";
+            cout << "[6] EXIT\n";
             cout << "\nENTER YOUR CHOICE HERE: ";
             cin >> userInput;
 
-            if (cin.fail() || userInput < 1 || userInput > 5) {
+            if (cin.fail() || userInput < 1 || userInput > 6) {
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << "Invalid input, please enter a number between 1 and 5.\n" << endl;
+                cout << "Invalid input, please enter a number between 1 and 6.\n" << endl;
             } else {
                 validInput = true;
             }
@@ -406,13 +477,16 @@ int main() {
             case 4:
                 cout << "Display all borrowed books selected.\n" << endl;
                 break;
+            case 5:
+                cout << "Calculate fine selected.\n" << endl;
+                break;
         }
 
         if (userInput == 1) {
             //Add a new member
             librarian.addMember();
         }
-        else if (userInput == 2 || userInput == 3 || userInput == 4) {
+        else if (userInput == 2 || userInput == 3 || userInput == 4 || userInput == 5) {
             bool validMemberID = false;
             while (!validMemberID) {
                 cout << "Enter Member ID: ";
@@ -461,11 +535,14 @@ int main() {
                     } else if (userInput == 4) {
                         //Display all borrowed books of a member
                         librarian.displayBorrowedBooks(userMemberID);
+                    } else if (userInput == 5) {
+                        //Calculate a member's fine
+                        librarian.calcFine(userMemberID);
                     }
                 }
             }
         }
-        else if (userInput == 5) {
+        else if (userInput == 6) {
             cout << "Exiting the program." << endl;
             running = false;
         }
