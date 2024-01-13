@@ -115,6 +115,41 @@ void Librarian::issueBook(int memberID, int bookID) {
 }
 
 void Librarian::returnBook(int memberID, int bookID) {
+    bool bookFound = false;
+
+    //Find the member
+    for (auto& member : members) {
+        if (member->getMemberID() == memberID) {
+            vector<Book*> borrowedBooks = member->getBooksBorrowed();
+            
+            //Check whether the member has borrowed any books
+            if (borrowedBooks.empty()) {
+                //No books borrowed
+                cout << "\nThe member has not borrowed any books." << endl;
+                return;
+            } else {
+                //There is a book to be returned
+                for (auto& book : borrowedBooks) {
+                    if (book->getBookID() == bookID) {
+                        //Check if the book is overdue
+
+                        //Calculate fine
+
+                        //Return the book
+                        cout << "\nBook Returned: " << book->getBookName() << endl;
+                        book->returnBook();
+                        bookFound = true;
+                        break;
+                    } 
+                }
+
+                if (!bookFound) {
+                    cout << "\nThe member has not borrowed this book." << endl;
+                }
+            }
+            break;
+        }
+    }
 }
 
 void Librarian::displayBorrowedBooks(int memberID) {
@@ -142,6 +177,7 @@ void Librarian::displayBorrowedBooks(int memberID) {
 }
 
 void Librarian::calcFine(int memberID) {
+  
 }
 
 
@@ -257,8 +293,9 @@ Date calcDueDate() {
     int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
     //Check for leap year
-    if ((dueDate.year % 4 == 0 && dueDate.year % 100 != 0) || (dueDate.year % 400 == 0))
+    if ((dueDate.year % 4 == 0 && dueDate.year % 100 != 0) || (dueDate.year % 400 == 0)){
         daysInMonth[1] = 29;
+    }
 
     //Adjust the day and month if necessary
     if (dueDate.day > daysInMonth[dueDate.month - 1]) {
@@ -391,7 +428,7 @@ int main() {
                 }
 
                 if (!validMemberID) {
-                    cout << "Invalid Member ID. Please try again." << endl;
+                    cout << "Invalid Member ID. Please try again.\n" << endl;
                 } else {
                     if (userInput == 2 || userInput == 3){
                         bool validBookID = false;
@@ -410,7 +447,7 @@ int main() {
                             }
 
                             if (!validBookID) {
-                                cout << "Invalid Book ID. Please try again." << endl;
+                                cout << "Invalid Book ID. Please try again.\n" << endl;
                             } else {
                                 if (userInput == 2) {
                                     //Issue a book to a member
