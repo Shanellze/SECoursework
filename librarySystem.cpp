@@ -451,15 +451,16 @@ int main() {
         int userBookID;
         bool validInput = false;
         while (!validInput) {
-            cout << "\n-----------------------------" << endl;
-            cout << "| Library Management System |" << endl;
-            cout << "-----------------------------" << endl;
-            cout << "[1] ADD A NEW MEMBER\n";
-            cout << "[2] ISSUE A BOOK\n";
-            cout << "[3] RETURN A BOOK\n";
-            cout << "[4] DISPLAY ALL BORROWED BOOKS\n";
-            cout << "[5] CALCULATE FINE \n";
-            cout << "[6] EXIT\n";
+            cout << "\n ---------------------------------" << endl;
+            cout << "|    Library Management System    |" << endl;
+            cout << " ---------------------------------" << endl;
+            cout << "| [1] ADD A NEW MEMBER            |\n";
+            cout << "| [2] ISSUE A BOOK                |\n";
+            cout << "| [3] RETURN A BOOK               |\n";
+            cout << "| [4] DISPLAY ALL BORROWED BOOKS  |\n";
+            cout << "| [5] CALCULATE FINE              |\n";
+            cout << "| [6] EXIT                        |\n";
+            cout << " ---------------------------------" << endl;
             cout << "\nENTER YOUR CHOICE HERE: ";
             cin >> userInput;
 
