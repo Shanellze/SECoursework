@@ -118,6 +118,9 @@ void Librarian::issueBook(int memberID, int bookID) {
 
 void Librarian::returnBook(int memberID, int bookID) {
     bool bookFound = false;
+    Date currentDate = getCurrentDate();
+    int finePerDay = 1;
+    int totalFine = 0;
 
     //Find the member
     for (auto& member : members) {
@@ -133,6 +136,11 @@ void Librarian::returnBook(int memberID, int bookID) {
                 //There is a book to be returned
                 for (auto& book : borrowedBooks) {
                     if (book->getBookID() == bookID) {
+                        Date dueDate = book->getDueDate();
+
+                        //Calculate the number of days overdue
+                        int daysOverdue = (dateToDays(currentDate) - dateToDays(dueDate)); 
+
                         // Check if the book is overdue
                         if (daysOverdue > 0) {
                             //Calculate the fine
@@ -142,7 +150,7 @@ void Librarian::returnBook(int memberID, int bookID) {
                             //Display fine details
                             cout << "Book ID: " << book->getBookID() << ", Overdue by: " << daysOverdue << " days, Fine: £" << fine << endl;
                         }
-                        
+
                         //Return the book
                         cout << "\nBook Returned: " << book->getBookName() << endl;
                         book->returnBook();
@@ -194,6 +202,8 @@ void Librarian::calcFine(int memberID) {
         if (member->getMemberID() == memberID) {
             vector<Book*> borrowedBooks = member->getBooksBorrowed();
             
+            cout << endl;
+
             //Iterate through each borrowed book
             for (auto& book : borrowedBooks) {
                 Date dueDate = book->getDueDate();
@@ -216,7 +226,7 @@ void Librarian::calcFine(int memberID) {
     }
 
     //Display the total fine
-    cout << "Total fine for Member ID " << memberID << ": £" << totalFine << endl;
+    cout << "\nTotal fine for Member ID " << memberID << ": £" << totalFine << endl;
   
 }
 
@@ -427,7 +437,7 @@ int main() {
     members[1]->setBooksBorrowed(libraryBooks[1]); 
 
     Date dueDate1 = {2023, 1, 15};
-    Date dueDate2 = {2023, 1, 20};
+    Date dueDate2 = {2023, 12, 20};
     libraryBooks[0]->borrowBook(members[1], dueDate1);
     libraryBooks[1]->borrowBook(members[1], dueDate2);
 
