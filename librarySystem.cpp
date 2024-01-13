@@ -68,6 +68,7 @@ void Librarian::addMember() {
 
     //Collecting data on the member
     memberID = members.size();
+    memberID++;
 
     cout << "Enter name: ";
     cin >> name;
@@ -79,7 +80,7 @@ void Librarian::addMember() {
     cin >> email;
 
     //Creating the member and adding it to the list of members
-    members.push_back(new Member(memberID++, name, address, email));
+    members.push_back(new Member(memberID, name, address, email));
 
     //Displaying the account details
     cout << "\nMember created:\n";
