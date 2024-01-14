@@ -12,4 +12,4 @@ librarySystem.o: librarySystem.cpp librarySystem.h
 
 .PHONY : clean
 clean:
-	$(RM) *~ *.o librarySystem
+	$(RM) *~ *.o *.exe librarySystem
