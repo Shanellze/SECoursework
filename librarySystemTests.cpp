@@ -4,8 +4,14 @@
 #include "librarySystem.h" 
 
 
+//Initialised test instances
+Person person("TestPerson", "TestAddress", "Test@email.com");
+Librarian librarian(1, "TestLibrarian", "TestAddress", "Test@email.com", 30000);
+Member member(1, "TestMember", "TestAddress", "Test@email.com");
+Book book(1, "TestBookName", "TestAuthorFirstName", "TestAuthorLastName");
+    
+
 TEST_CASE("test person", "[person]") {
-    Person person("TestPerson", "TestAddress", "Test@email.com");
 
     //Testing getter methods
     REQUIRE(person.getName() == "TestPerson");
@@ -28,7 +34,6 @@ TEST_CASE("test person", "[person]") {
 }
 
 TEST_CASE("test librarian", "[Librarian]") {
-    Librarian librarian(1, "TestLibrarian", "TestAddress", "Test@email.com", 30000);
 
     //Testing getter methods
     REQUIRE(librarian.getStaffID() == 1);
@@ -63,8 +68,7 @@ TEST_CASE("test librarian", "[Librarian]") {
 }
 
 TEST_CASE("test member", "[Member]") {
-    Member member(1, "TestMember", "TestAddress", "Test@email.com");
-
+    
     //Testing getter methods
     REQUIRE(member.getMemberID() == 1);
 
@@ -89,7 +93,7 @@ TEST_CASE("test member", "[Member]") {
 }
 
 TEST_CASE("test book", "[Book]") {
-    Book book(1, "TestBookName", "TestAuthorFirstName", "TestAuthorLastName");
+    
     Date dueDate1 = {2023, 1, 15};
     book.setDueDate(dueDate1);
 
